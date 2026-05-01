@@ -11,7 +11,10 @@ import accelerate
 import safetensors
 import numpy as np
 import yaml
-from IPython.display import display, Audio
+try:
+    from IPython.display import display, Audio
+except ImportError:
+    pass
 
 from models.vc.flow_matching_transformer.fmt_model import FlowMatchingTransformer
 from models.vc.autoregressive_transformer.ar_model import AutoregressiveTransformer

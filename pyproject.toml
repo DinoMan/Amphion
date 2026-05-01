@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "amphion"
+version = "0.2.0"
+description = "Amphion toolkit - MaskGCT, Metis, and Vevo voice synthesis and conversion"
+requires-python = ">=3.9"
+dependencies = [
+    "torch>=2.0.1",
+    "transformers>=4.41.2,<5.0.0",
+    "accelerate>=0.24.1",
+    "safetensors",
+    "onnxruntime",
+    "numpy>=1.26.0,<2.0.0",
+    "scipy>=1.12.0",
+    "librosa",
+    "encodec",
+    "phonemizer",
+    "g2p_en",
+    "jieba",
+    "cn2an",
+    "pypinyin",
+    "LangSegment",
+    "pyworld",
+    "pyopenjtalk",
+    "pykakasi",
+    "json5",
+    "ruamel.yaml",
+    "tqdm",
+    "huggingface_hub",
+    "unidecode",
+    "langid",
+    "peft",
+]
+
+[project.optional-dependencies]
+gradio = ["gradio", "spaces"]
+whisper = ["openai-whisper"]
+
+[tool.setuptools]
+packages = { find = { include = ["models*", "utils*"] } }
+
+[tool.setuptools.package-data]
+"models.tts.maskgct" = ["config/*.json", "ckpt/*.pt"]
+"models.tts.maskgct.g2p" = ["sources/**/*", "utils/*.json"]
+"models.tts.maskgct.g2p.g2p" = ["vocab.json"]
+"models.tts.metis" = ["config/*.json"]
+"models.vc.vevo" = ["config/*.json"]

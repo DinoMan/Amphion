@@ -6,14 +6,29 @@
 from models.tts.maskgct.g2p.g2p import cleaners
 from tokenizers import Tokenizer
 from models.tts.maskgct.g2p.g2p.text_tokenizers import TextTokenizer
-import LangSegment
+import importlib.util as _ilu
+_spec = _ilu.find_spec("LangSegment")
+_ls_mod = _ilu.module_from_spec(_ilu.spec_from_file_location(
+    "LangSegment.LangSegment",
+    _spec.submodule_search_locations[0] + "/LangSegment.py"
+))
+_ls_mod.__spec__.loader.exec_module(_ls_mod)
+
+class _LangSegmentCompat:
+    setfilters = staticmethod(_ls_mod.setfilters)
+    getTexts = staticmethod(_ls_mod.getTexts)
+
+LangSegment = _LangSegmentCompat
 import json
 import re
+import os
 
 
 class PhonemeBpeTokenizer:
 
-    def __init__(self, vacab_path="./models/tts/maskgct/g2p/g2p/vocab.json"):
+    def __init__(self, vacab_path=None):
+        if vacab_path is None:
+            vacab_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "vocab.json")
         self.lang2backend = {
             "zh": "cmn",
             "ja": "ja",
